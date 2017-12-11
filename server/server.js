@@ -17,6 +17,16 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
        console.log('Disconnect to browser') ;
     });
+    
+    socket.emit('newEmail', {
+        from: 'abc@gmail.com',
+        text: 'Hello world',
+        createdAt: 123
+    });
+    
+    socket.on('newEmail', (email) => {
+        console.log('New email', email);
+    });
 });
 
 server.listen(port, () => {
