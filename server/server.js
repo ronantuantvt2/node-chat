@@ -18,14 +18,25 @@ io.on('connection', (socket) => {
        console.log('Disconnect to browser') ;
     });
     
-    socket.emit('newEmail', {
-        from: 'abc@gmail.com',
-        text: 'Hello world',
-        createdAt: 123
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'Welcome',
+        createAt: new Date().getTime()
     });
     
-    socket.on('newEmail', (email) => {
-        console.log('New email', email);
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'New user joined',
+        createdAt: new Date().getTime()
+    });
+        
+    socket.on('createMessage', (message) => {
+        console.log(message);
+        io.emit('newMessage', {
+            from : message.from,
+            text : message.text,
+            createdAt: new Date().getTime()
+        });
     });
 });
 
