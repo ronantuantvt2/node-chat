@@ -12,12 +12,16 @@ socket.on('newMessage', (message) => {
     $('#messages').append(li);
 });
 
+var messageTextBox = $('input[name=message]');
+var sendButton = $('button[name=sendButton]');
 $('#messageForm').on('submit', function(e) {
   e.preventDefault();
+  sendButton.attr('disabled', 'disabled');
   socket.emit('createMessage', {
     from: 'User',
-    text: $('input[name=message]').val()
+    text: messageTextBox.val()
   }, function(data) {
-    console.log(data);
+    messageTextBox.val('');
+    sendButton.removeAttr('disabled');
   });
 });
