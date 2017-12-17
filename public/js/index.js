@@ -7,10 +7,15 @@ socket.on('disconnect', () => {
 });
 
 socket.on('newMessage', (message) => {    
-    var li = $('<li></li>');
     var formattedTime = moment(message.createdAt).format('hh:mm a');
-    li.text(`${message.from} ${formattedTime}: ${message.text}`);
-    $('#messages').append(li);
+    var messageTemplate = $('#messageTpl').html();
+    var messageHtml = Mustache.render(messageTemplate, {
+        text: message.text,
+        from: message.from,
+        createdAt: formattedTime
+    });
+    
+    $('#messages').append(messageHtml);    
 });
 
 var messageTextBox = $('input[name=message]');
